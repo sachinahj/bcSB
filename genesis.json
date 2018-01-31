@@ -8,7 +8,7 @@
   "difficulty": "0x400",
   "gasLimit": "0x8000000",
   "alloc": {
-    "dc88a1e80e2ea5833c637fe95c8ac06ac6a59e9c": { "balance": "1000000000000000000000000" },
+    "dc88a1e80e2ea5833c637fe95c8ac06ac6a59e9c": { "balance": "1" },
     "b67f7a4d4f2dd0d0cb4e9637445d0ba8e3fa5369": { "balance": "1000000000000000000000" },
     "f1628d156f7b09eed363dc819b4bb59398e05e0c": { "balance": "100000000000000000000" },
     "80d73d99db2e913829197e87207c89287bb6780a": { "balance": "100000000000000000000" },

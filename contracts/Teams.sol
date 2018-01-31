@@ -1,19 +1,28 @@
 pragma solidity ^0.4.16;
 
-contract Team {
+import "./Team.sol";
+
+contract Teams {
     address public bookie;
-    string public name;
+    address[] public teams;
 
     modifier isBookie() {
         if (msg.sender != bookie) return;
         _;
     }
 
-    function Team(string _name)
+    function Teams(address[] _teams)
     public
     {
-        name = _name;
+        teams = _teams;
         bookie = msg.sender;
+    }
+
+    function addTeam(address _team)
+    public
+    isBookie()
+    {
+        teams.push(_team);
     }
 
     function kill()
