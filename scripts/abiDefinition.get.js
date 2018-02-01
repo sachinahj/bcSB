@@ -2,7 +2,7 @@
 
 const contracts = process.argv.slice(2);
 if (!contracts) {
-    console.log("Error: No Contract Name");
+    console.log("Error: No contracts");
     return;
 }
 

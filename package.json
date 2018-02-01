@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./scripts/bootstrap.js",
     "teams.create": "node ./scripts/teams.create.js",
-    "abi.get": "node ./scripts/abi.get.js",
+    "code.get": "node ./scripts/code.get.js",
+    "abiDefinition.get": "node ./scripts/abiDefinition.get.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -12,8 +12,8 @@ contract Team {
     function Team(string _name)
     public
     {
-        name = _name;
         bookie = msg.sender;
+        name = _name;
     }
 
     function kill()

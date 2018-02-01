@@ -11,24 +11,24 @@ contract Teams {
         _;
     }
 
-    function Teams(address[] _teams)
+    function Teams()
     public
     {
-        teams = _teams;
         bookie = msg.sender;
     }
 
-    function addTeam(address _team)
+    function addTeam(address team)
     public
     isBookie()
     {
-        teams.push(_team);
+        teams.push(team);
     }
 
     function kill()
     public
     isBookie()
     {
+        // iterate and kill each team
         selfdestruct(bookie);
     }
 }

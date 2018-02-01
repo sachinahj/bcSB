@@ -1,4 +1,3 @@
-// 0xb5922c6b06cd3c981a12b8102e277a6b958539b2
 'use strict'
 
 const Webbie = require("../collections/Webbie.js");
