@@ -1,6 +1,7 @@
 pragma solidity ^0.4.16;
 
 import "./Team.sol";
+import "./Wager.sol";
 
 contract Bookie {
     address public owner;
