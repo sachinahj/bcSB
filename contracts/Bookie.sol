@@ -1,14 +1,15 @@
 pragma solidity ^0.4.16;
 
 import "./Team.sol";
-import "./Teams.sol";
 
 contract Bookie {
     address public owner;
-    Teams public teams = new Teams();
+    Team[] public teams;
+    mapping (address => Wager) public wagers;
+
 
     modifier isOwner() {
-        if (msg.sender != owner) return;
+        require(msg.sender == owner);
         _;
     }
 
@@ -23,13 +24,29 @@ contract Bookie {
     isOwner()
     {
         Team team = new Team(name);
-        teams.addTeam(team);
+        teams.push(team);
+    }
+
+    function createWager(address teamHome, address teamAway, int line)
+    public
+    isOwner()
+    {
+        Wager wager = new Wager(teamHome, teamAway, line);
+        wagers[wager] = wager;
+    }
+
+    function placeBet(address wager, address team, uint amount)
+    public
+    payable
+    {
+        wagers[wager].placeBet.value(msg.value)(msg.sender, team, amount);
     }
 
     function kill()
     public
     isOwner()
     {
+        // kill wagers
         // kill teams
         selfdestruct(owner);
     }

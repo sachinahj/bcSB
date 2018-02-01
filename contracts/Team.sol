@@ -5,7 +5,7 @@ contract Team {
     string public name;
 
     modifier isBookie() {
-        if (msg.sender != bookie) return;
+        require(msg.sender == bookie);
         _;
     }
 

@@ -11,35 +11,46 @@ contract Wager {
 
     struct Bet {
         address bettor;
+        address team;
         uint amount;
-        int line;
     }
 
     State public state = State.Open; // initialize on create
     int currentLine;
-    string teamHome;
-    string teamAway;
+    address teamHome;
+    address teamAway;
     Bet[] bets;
 
-    modifier inState(State _state) {
-        if (state != _state) return;
+    modifier isBookie() {
+        require(msg.sender == bookie);
         _;
     }
 
-    function Wager(string _teamHome, string _teamAway, int line) public {
+    modifier inState(State _state) {
+        require(state == _state);
+        _;
+    }
+
+    function Wager(address _teamHome, address _teamAway, int line)
+    public {
         bookie = msg.sender;
         teamHome = _teamHome;
         teamAway = _teamAway;
         currentLine = line;
     }
 
-    function placeBet(string team) public inState(State.Open) payable {
-        require(keccak256(team) == keccak256(teamHome) || keccak256(team) == keccak256(teamAway));
+    function placeBet(address bettor, address team, uint amount)
+    public
+    isBookie()
+    inState(State.Open)
+    payable
+    {
+        // check if team is valid
         bets.push(
             Bet({
-                bettor: msg.sender,
-                amount: msg.value,
-                line: currentLine
+                bettor: bettor,
+                team: team,
+                amount: amount
             })
         );
     }
