@@ -8,6 +8,10 @@ contract Bookie {
     Team[] public teams;
     mapping (address => Wager) public wagers;
 
+    event LogBookieInitialized(address owner);
+    event LogTeamAdded(address team, string name);
+    event LogWagerAdded(address wager, address teamHome, address teamAway, int line);
+    event LogBookieKilled(address sender, address owner);
 
     modifier isOwner() {
         require(msg.sender == owner);
@@ -18,6 +22,7 @@ contract Bookie {
     public
     {
         owner = msg.sender;
+        LogBookieInitialized(owner);
     }
 
     function addTeam(string name)
@@ -26,6 +31,7 @@ contract Bookie {
     {
         Team team = new Team(name);
         teams.push(team);
+        LogTeamAdded(team, name);
     }
 
     function createWager(address teamHome, address teamAway, int line)
@@ -34,6 +40,7 @@ contract Bookie {
     {
         Wager wager = new Wager(teamHome, teamAway, line);
         wagers[wager] = wager;
+        LogWagerAdded(wager, teamHome, teamAway, line);
     }
 
     function placeBet(address wager, address team, uint amount)
@@ -49,6 +56,7 @@ contract Bookie {
     {
         // kill wagers
         // kill teams
+        LogBookieKilled(msg.sender, owner);
         selfdestruct(owner);
     }
 }

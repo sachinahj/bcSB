@@ -17,6 +17,36 @@ let gc;
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 web3.personal.unlockAccount(bookieAccount, "password");
 
+const addTeams = function (bookieContract) {
+    return teams.map(name => {
+        return new Promise((resolve, reject) => {
+            const gas = web3.eth.estimateGas({from: bookieAccount}) * 10;
+            bookieContract.addTeam(name, {from: bookieAccount, gas: gas}, (err, response) => {
+                console.log("Team Contract Deployed response: " + response);
+                resolve(response);
+            });
+        });
+    });
+};
+
+const createWagers = function (bookieContract, teamAdresses) {
+    const wagers = [];
+    for (let i = 0; i < teamAdresses.length; i += 2) {
+        if (teamAdresses[i] && teamAdresses[i + 1]) {
+            wagers.push(
+                new Promise((resolve, reject) => {
+                    const gas = web3.eth.estimateGas({from: bookieAccount}) * 10;
+                    bookieContract.createWager(teamAdresses[i], teamAdresses[i + 1], 0, {from: bookieAccount, gas: gas}, (err, response) => {
+                        console.log("Wager Contract Deployed response: " + response);
+                        resolve(response);
+                    });
+                })
+            );
+        }
+    }
+    return wagers;
+};
+
 Webbie.deployContract(
     ["Team", "Wager", "Bookie"],
     [],
@@ -24,19 +54,17 @@ Webbie.deployContract(
         console.log("Bookie Contract Deployed here: " + bookieContract.address);
         gc = bookieContract;
 
-        const teamPromises = teams.map(name => {
-            return new Promise((resolve, reject) => {
-                const gas = web3.eth.estimateGas({from: bookieAccount})
-                bookieContract.addTeam(name, {from: bookieAccount, gas: gas * 10}, (err, response) => {
-                    console.log("Team Contract Deployed response: " + response);
-                    resolve(response);
-                });
-            });
-        });
+        const addTeamsPromises = addTeams(bookieContract);
+        Promise.all(addTeamsPromises).then(teamAdresses => {
+            console.log("teamAdresses", teamAdresses);
 
-        Promise.all(teamPromises)
-        .then(teams => {
-            console.log("teams", teams);
+            const createWagersPromises = createWagers(bookieContract, teamAdresses);
+            Promise.all(createWagersPromises).then(wagerAddresses => {
+                console.log("wagerAddresses", wagerAddresses);
+            })
+            .catch(err => {
+                console.log("err", err);
+            });
         })
         .catch(err => {
             console.log("err", err);

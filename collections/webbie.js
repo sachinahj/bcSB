@@ -70,6 +70,17 @@ Webbie.getContract = function (contracts, address) {
     return contract;
 };
 
+Webbie.getLogs = function (address) {
+    const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    web3.eth.filter({
+      address: address,
+      fromBlock: 0,
+      to: 'latest'
+    }).get(function (err, result) {
+      console.log("result", result);
+    })
+};
+
 Webbie.getCode = function (contracts) {
     return contracts.map((contract, index) => {
         let code = fs.readFileSync(`./contracts/${contract}.sol`).toString();

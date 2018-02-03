@@ -8,6 +8,7 @@
     "teams.create": "node ./scripts/teams.create.js",
     "bookie.init": "node ./scripts/bookie.init.js",
     "code.get": "node ./scripts/code.get.js",
+    "logs.get": "node ./scripts/logs.get.js",
     "abiDefinition.get": "node ./scripts/abiDefinition.get.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

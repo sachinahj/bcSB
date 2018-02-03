@@ -1,15 +1,16 @@
 'use strict'
 
-const contracts = process.argv.slice(2);
-console.log("contracts", contracts);
-if (!contracts) {
-    console.log("Error: No contracts");
+console.log("process.argv", process.argv);
+const address = process.argv[2];
+console.log("address", address);
+if (!address) {
+    console.log("Error: No address");
     return;
 }
 
 const Webbie = require("../collections/Webbie.js");
 
-const code = Webbie.getCode(contracts);
+const code = Webbie.getLogs(address);
 
 console.log("\n");
 console.log("--------------------------------------");
