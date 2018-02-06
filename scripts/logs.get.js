@@ -8,12 +8,17 @@ if (!address) {
     return;
 }
 
+const web3 = require('web3');
 const Webbie = require("../collections/Webbie.js");
 
-const code = Webbie.getLogs(address);
+const _web3 = new web3(new web3.providers.HttpProvider("http://localhost:8545"));
+Webbie.getLogs(address, function (logs) {
+    logs.forEach(log => {
+        console.log("--------------------------------------");
+        console.log(log.name);
+        log.events.forEach(event => {
+            console.log(event.name, ":", event.type, ":", event.value.toString());
+        });
+    });
+});
 
-console.log("\n");
-console.log("--------------------------------------");
-console.log(code);
-console.log("--------------------------------------");
-console.log("\n");
