@@ -39,7 +39,7 @@ contract Wager {
         currentLine = line;
     }
 
-    function placeBet(address bettor, address team, uint amount)
+    function placeBet(address bettor, address team)
     public
     isBookie()
     inState(State.Open)
@@ -50,7 +50,7 @@ contract Wager {
             Bet({
                 bettor: bettor,
                 team: team,
-                amount: amount
+                amount: msg.value,
             })
         );
     }
