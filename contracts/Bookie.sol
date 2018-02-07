@@ -5,10 +5,10 @@ import "./Wager.sol";
 
 contract Bookie {
     address public owner;
-    Team[] public teams;
+    mapping (address => Team) public teams;
     mapping (address => Wager) public wagers;
 
-    event LogBookieInitialized(address owner);
+    event LogBookieInitialized(address owner, address bookie);
     event LogTeamAdded(address team, string name);
     event LogWagerAdded(address wager, address teamHome, address teamAway, int line);
     event LogBookieKilled(address sender, address owner);
@@ -22,15 +22,15 @@ contract Bookie {
     public
     {
         owner = msg.sender;
-        LogBookieInitialized(owner);
+        LogBookieInitialized(owner, this);
     }
 
-    function addTeam(string name)
+    function createTeam(string name)
     public
     isOwner()
     {
         Team team = new Team(name);
-        teams.push(team);
+        teams[team] = team;
         LogTeamAdded(team, name);
     }
 

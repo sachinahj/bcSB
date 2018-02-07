@@ -13,7 +13,6 @@ const teams = [
 const Webbie = require("../collections/Webbie.js");
 const Web3 = require('web3');
 
-let gc;
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 web3.personal.unlockAccount(bookieAccount, "password");
 
@@ -52,7 +51,6 @@ Webbie.deployContract(
     [],
     (bookieContract) => {
         console.log("Bookie Contract Deployed Address: " + bookieContract.address);
-        gc = bookieContract;
 
         const addTeamsPromises = addTeams(bookieContract);
         Promise.all(addTeamsPromises).then(teamAdresses => {
@@ -71,8 +69,3 @@ Webbie.deployContract(
         });
     }
 );
-
-
-// gc = Webbie.getContract(["Team", "Wager", "Bookie"], "0x9232fe6931ed157eb18f1b5319d62d2b4f176ab2");
-// const gas = web3.eth.estimateGas({from: bookieAccount})
-// gc.addTeam("Ahuja", {from: bookieAccount});
