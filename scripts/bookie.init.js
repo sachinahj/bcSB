@@ -22,7 +22,7 @@ const addTeams = function (bookieContract) {
         return new Promise((resolve, reject) => {
             const gas = web3.eth.estimateGas({from: bookieAccount}) * 10;
             bookieContract.addTeam(name, {from: bookieAccount, gas: gas}, (err, response) => {
-                console.log("Team Contract Deployed response: " + response);
+                console.log("Team Contract Deployed Transaction: " + response);
                 resolve(response);
             });
         });
@@ -37,7 +37,7 @@ const createWagers = function (bookieContract, teamAdresses) {
                 new Promise((resolve, reject) => {
                     const gas = web3.eth.estimateGas({from: bookieAccount}) * 10;
                     bookieContract.createWager(teamAdresses[i], teamAdresses[i + 1], 0, {from: bookieAccount, gas: gas}, (err, response) => {
-                        console.log("Wager Contract Deployed response: " + response);
+                        console.log("Wager Contract Deployed Transaction: " + response);
                         resolve(response);
                     });
                 })
@@ -51,7 +51,7 @@ Webbie.deployContract(
     ["Team", "Wager", "Bookie"],
     [],
     (bookieContract) => {
-        console.log("Bookie Contract Deployed here: " + bookieContract.address);
+        console.log("Bookie Contract Deployed Address: " + bookieContract.address);
         gc = bookieContract;
 
         const addTeamsPromises = addTeams(bookieContract);

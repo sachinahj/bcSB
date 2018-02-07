@@ -43,11 +43,11 @@ contract Bookie {
         LogWagerAdded(wager, teamHome, teamAway, line);
     }
 
-    function placeBet(address wager, address team, uint amount)
+    function placeBet(address wager, address team)
     public
     payable
     {
-        wagers[wager].placeBet.value(msg.value)(msg.sender, team, amount);
+        wagers[wager].placeBet.value(msg.value)(msg.sender, team);
     }
 
     function kill()

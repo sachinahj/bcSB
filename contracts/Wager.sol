@@ -16,10 +16,10 @@ contract Wager {
     }
 
     State public state = State.Open; // initialize on create
-    int currentLine;
-    address teamHome;
-    address teamAway;
-    Bet[] bets;
+    int public currentLine;
+    address public teamHome;
+    address public teamAway;
+    Bet[] public bets;
 
     modifier isBookie() {
         require(msg.sender == bookie);
@@ -50,7 +50,7 @@ contract Wager {
             Bet({
                 bettor: bettor,
                 team: team,
-                amount: msg.value,
+                amount: msg.value
             })
         );
     }
