@@ -24,28 +24,37 @@ Bookie.createWager = function (teamHome, teamAway, line) {
     Webbie.unlockAccount(bookieAccount, "password");
     const bookieContract = Webbie.getContract(bookieAddress, ['Team', 'Wager', 'Bookie']);
     const estimateGas = Webbie.estimateGas(bookieAccount);
-    const transactionHash = bookieContract.createWager(teamHome, teamAway, line, {from: bookieAccount, gas: gas});
+    console.log("teamHome", teamHome);
+    console.log("teamAway", teamAway);
+    console.log("line", line);
+    const transactionHash = bookieContract.createWager(teamHome, teamAway, line, {from: bookieAccount, gas: bookieContract});
     return transactionHash;
 };
 
-Bookie.getLogs = function (callback) {
+Bookie.getRawLogs = function (callback) {
     Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], callback);
 };
 
 Bookie.getTeams = function (callback) {
-    const teams = [];
     Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], function (logs) {
-        logs.forEach(log => {
-            if (log.name == "LogTeamAdded") {
-                const team = {};
-                log.events.forEach(event => {
-                    team[event.name] = event.value.toString()
-                });
-                teams.push(team);
-            }
-        });
+        const teams = logs.filter(log => log.name == "LogTeamAdded").map(parseLog);
         callback && callback(teams);
     });
 };
+
+Bookie.getWagers = function (callback) {
+    Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], function (logs) {
+        const wagers = logs.filter(log => log.name == "LogWagerAdded").map(parseLog);
+        callback && callback(wagers);
+    });
+};
+
+function parseLog(raw) {
+    const log = {};
+    raw.events.forEach(event => {
+        log[event.name] = event.value.toString()
+    });
+    return log;
+}
 
 module.exports = Bookie;

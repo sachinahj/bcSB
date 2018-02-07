@@ -3,8 +3,8 @@
 
 const test = process.argv[2];
 const args = process.argv.slice(3);
-console.log("test", test);
-console.log("args", args);
+console.log("test:", test);
+console.log("args:", args);
 if (!test) {
     console.log("Error: No test");
     return;
