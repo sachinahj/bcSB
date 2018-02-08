@@ -75,15 +75,15 @@ Webbie.getContract = function (address, contracts) {
     return contract;
 };
 
-Webbie.getTransactionReceipt = function (transactionHash, callback) {
-    _web3.eth.getTransactionReceipt(transactionHash, function (err, receipt) {
-        console.log("receipt", receipt);
+Webbie.getTransaction = function (transactionHash, callback) {
+    _web3.eth.getTransaction(transactionHash, function (err, receipt) {
+        callback && callback(receipt);
     });
 };
 
-Webbie.getTransaction = function (transactionHash, callback) {
-    _web3.eth.getTransaction(transactionHash, function (err, receipt) {
-        console.log("receipt", receipt);
+Webbie.getTransactionReceipt = function (transactionHash, callback) {
+    _web3.eth.getTransactionReceipt(transactionHash, function (err, receipt) {
+        callback && callback(receipt);
     });
 };
 

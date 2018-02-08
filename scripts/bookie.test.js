@@ -1,7 +1,7 @@
 // npm run bookie.test init
 // npm run bookie.test createTeams
-//
-
+// npm run bookie.test createWagers
+// npm run bookie.test placeBets
 // npm run bookie.test getRawLogs
 // npm run bookie.test getTeams
 // npm run bookie.test getWagers
@@ -20,8 +20,7 @@ const Bookie = require("../collections/bookie.js");
 let transactionHash;
 switch(test) {
     case "init":
-        Bookie.init(function
-            (contract) {
+        Bookie.init(function (contract) {
             console.log("Bookie contract deployed, address:", contract.address);
         });
         break;
@@ -43,11 +42,16 @@ switch(test) {
         Bookie.getTeams(function (teams) {
             for (let i = 0; i < teams.length; i += 2) {
                 if (teams[i] && teams[i + 1]) {
-                    Bookie.createWager(teams[i].team, teams[i + 1].team, 0);
+                    Bookie.createWager(teams[i].team, teams[i + 1].team);
                     console.log("transactionHash createWager", team, transactionHash);
                 }
             }
         });
+        break;
+    case "placeBets":
+        const bets = [{
+
+        }];
         break;
     case "getRawLogs":
         Bookie.getRawLogs(function (logs) {

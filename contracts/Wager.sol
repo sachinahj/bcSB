@@ -31,12 +31,11 @@ contract Wager {
         _;
     }
 
-    function Wager(address _teamHome, address _teamAway, int line)
+    function Wager(address _teamHome, address _teamAway)
     public {
         bookie = msg.sender;
         teamHome = _teamHome;
         teamAway = _teamAway;
-        currentLine = line;
     }
 
     function placeBet(address bettor, address team)

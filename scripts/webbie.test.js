@@ -14,10 +14,14 @@ const Webbie = require("../collections/webbie.js");
 
 switch(test) {
     case "transaction":
-        Webbie.getTransaction(...args);
+        Webbie.getTransaction(...args, function (receipt) {
+            console.log("receipt", receipt);
+        });
         break;
     case "transactionReceipt":
-        Webbie.getTransactionReceipt(...args);
+        Webbie.getTransactionReceipt(...args, function (receipt) {
+            console.log("receipt", receipt);
+        });
         break;
     case "logs":
         break;

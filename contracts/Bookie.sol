@@ -10,7 +10,7 @@ contract Bookie {
 
     event LogBookieInitialized(address owner, address bookie);
     event LogTeamAdded(address team, string name);
-    event LogWagerAdded(address wager, address teamHome, address teamAway, int line);
+    event LogWagerAdded(address wager, address teamHome, address teamAway);
     event LogBookieKilled(address sender, address owner);
 
     modifier isOwner() {
@@ -34,13 +34,13 @@ contract Bookie {
         LogTeamAdded(team, name);
     }
 
-    function createWager(address teamHome, address teamAway, int line)
+    function createWager(address teamHome, address teamAway)
     public
     isOwner()
     {
-        Wager wager = new Wager(teamHome, teamAway, line);
+        Wager wager = new Wager(teamHome, teamAway);
         wagers[wager] = wager;
-        LogWagerAdded(wager, teamHome, teamAway, line);
+        LogWagerAdded(wager, teamHome, teamAway);
     }
 
     function placeBet(address wager, address team)

@@ -20,14 +20,13 @@ Bookie.createTeam = function (name) {
     return transactionHash;
 };
 
-Bookie.createWager = function (teamHome, teamAway, line) {
+Bookie.createWager = function (teamHome, teamAway) {
     Webbie.unlockAccount(bookieAccount, "password");
     const bookieContract = Webbie.getContract(bookieAddress, ['Team', 'Wager', 'Bookie']);
     const estimateGas = Webbie.estimateGas(bookieAccount);
     console.log("teamHome", teamHome);
     console.log("teamAway", teamAway);
-    console.log("line", line);
-    const transactionHash = bookieContract.createWager(teamHome, teamAway, line, {from: bookieAccount, gas: bookieContract});
+    const transactionHash = bookieContract.createWager(teamHome, teamAway, {from: bookieAccount, gas: bookieContract});
     return transactionHash;
 };
 
