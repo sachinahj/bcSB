@@ -13,6 +13,18 @@ if (!test) {
 const Webbie = require("../collections/webbie.js");
 
 switch(test) {
+    case "abi":
+        const abi = Webbie.getAbi(args);
+        console.log("--------------------------------------");
+        console.log(JSON.stringify(abi));
+        console.log("--------------------------------------");
+        break;
+    case "code":
+        const code = Webbie.getCode(args);
+        console.log("--------------------------------------");
+        console.log(code);
+        console.log("--------------------------------------");
+        break;
     case "transaction":
         Webbie.getTransaction(...args, function (receipt) {
             console.log("receipt", receipt);

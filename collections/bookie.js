@@ -24,9 +24,7 @@ Bookie.createWager = function (teamHome, teamAway) {
     Webbie.unlockAccount(bookieAccount, "password");
     const bookieContract = Webbie.getContract(bookieAddress, ['Team', 'Wager', 'Bookie']);
     const estimateGas = Webbie.estimateGas(bookieAccount);
-    console.log("teamHome", teamHome);
-    console.log("teamAway", teamAway);
-    const transactionHash = bookieContract.createWager(teamHome, teamAway, {from: bookieAccount, gas: bookieContract});
+    const transactionHash = bookieContract.createWager(teamHome, teamAway, {from: bookieAccount, gas: estimateGas});
     return transactionHash;
 };
 
@@ -36,16 +34,24 @@ Bookie.getRawLogs = function (callback) {
 
 Bookie.getTeams = function (callback) {
     Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], function (logs) {
-        const teams = logs.filter(log => log.name == "LogTeamAdded").map(parseLog);
+        const teams = logs.filter(log => log && log.name == "LogTeamAdded").map(parseLog);
         callback && callback(teams);
     });
 };
 
 Bookie.getWagers = function (callback) {
     Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], function (logs) {
-        const wagers = logs.filter(log => log.name == "LogWagerAdded").map(parseLog);
+        const wagers = logs.filter(log => log && log.name == "LogWagerAdded").map(parseLog);
         callback && callback(wagers);
     });
+};
+
+Bookie.placeBet = function (bettor, wager, team, amount) {
+    Webbie.unlockAccount(bettor, "password");
+    const bookieContract = Webbie.getContract(bookieAddress, ['Team', 'Wager', 'Bookie']);
+    const estimateGas = Webbie.estimateGas(bookieAccount);
+    const transactionHash = bookieContract.placeBet(wager, team, {from: bettor, gas: estimateGas, value: amount * 1000000000000000000});
+    return transactionHash;
 };
 
 function parseLog(raw) {

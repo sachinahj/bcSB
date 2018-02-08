@@ -42,16 +42,11 @@ switch(test) {
         Bookie.getTeams(function (teams) {
             for (let i = 0; i < teams.length; i += 2) {
                 if (teams[i] && teams[i + 1]) {
-                    Bookie.createWager(teams[i].team, teams[i + 1].team);
-                    console.log("transactionHash createWager", team, transactionHash);
+                    const transactionHash = Bookie.createWager(teams[i].team, teams[i + 1].team);
+                    console.log("transactionHash createWager", teams[i].name, teams[i + 1].name, transactionHash);
                 }
             }
         });
-        break;
-    case "placeBets":
-        const bets = [{
-
-        }];
         break;
     case "getRawLogs":
         Bookie.getRawLogs(function (logs) {
@@ -62,6 +57,28 @@ switch(test) {
                     console.log(event.name, ":", event.type, ":", event.value.toString());
                 });
             });
+        });
+        break;
+    case "placeBets":
+        const bets = [{
+            bettor: "0x139d356651A57CdBeC7e29aCf36a4A05EbD3A5e1",
+            amount: 10,
+        }, {
+            bettor: "0xf1628D156f7B09EED363DC819B4bb59398E05e0C",
+            amount: 10,
+        }, {
+            bettor: "0x80D73D99DB2e913829197e87207c89287bB6780A",
+            amount: 10,
+        }];
+        Bookie.getWagers(function (wagers) {
+            console.log("Wagers:", wagers);
+            let wager = wagers[0]
+            if (wager) {
+                bets.forEach(bet => {
+                    const transactionHash = Bookie.placeBet(bet.bettor, wager.wager, wager.teamHome, bet.amount);
+                    console.log("transactionHash placeBet", bet.bettor, wager.wager, wager.teamHome, bet.amount, transactionHash);
+                });
+            }
         });
         break;
     case "getTeams":

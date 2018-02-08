@@ -16,7 +16,6 @@ contract Wager {
     }
 
     State public state = State.Open; // initialize on create
-    int public currentLine;
     address public teamHome;
     address public teamAway;
     Bet[] public bets;

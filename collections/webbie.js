@@ -26,11 +26,11 @@ Webbie.getCompiledCode = function (contracts) {
     return compiledCode;
 };
 
-Webbie.getAbiDefinition = function (contracts) {
+Webbie.getAbi = function (contracts) {
     const contractName = contracts[contracts.length - 1];
     const compiledCode = Webbie.getCompiledCode(contracts);
-    const abiDefinition = JSON.parse(compiledCode.contracts[`${contractName}.sol:${contractName}`].interface);
-    return abiDefinition;
+    const abi = JSON.parse(compiledCode.contracts[`${contractName}.sol:${contractName}`].interface);
+    return abi;
 };
 
 Webbie.getByteCode = function (contracts) {
@@ -41,18 +41,18 @@ Webbie.getByteCode = function (contracts) {
 };
 
 Webbie.deployContract = function (from, contracts, params, callback) {
-    const abiDefinition = Webbie.getAbiDefinition(contracts);
+    const abi = Webbie.getAbi(contracts);
     const byteCode = Webbie.getByteCode(contracts);
 
-    const contract = _web3.eth.contract(abiDefinition);
+    const contract = _web3.eth.contract(abi);
     const gasEstimate = _web3.eth.estimateGas({data: byteCode}) * 10;
 
-    console.log("==============================");
-    console.log("deploying contract with:");
+    console.log("=======Webbie.deployContract=======");
+    console.log("");
     console.log("--contracts-------", contracts);
     console.log("--params-------", params);
     console.log("--gasEstimate-------", gasEstimate);
-    console.log("==============================");
+    console.log("====================================");
 
     contract.new(...params, {
         data: byteCode,
@@ -70,8 +70,8 @@ Webbie.deployContract = function (from, contracts, params, callback) {
 };
 
 Webbie.getContract = function (address, contracts) {
-    const abiDefinition = Webbie.getAbiDefinition(contracts);
-    const contract = _web3.eth.contract(abiDefinition).at(address);
+    const abi = Webbie.getAbi(contracts);
+    const contract = _web3.eth.contract(abi).at(address);
     return contract;
 };
 
@@ -88,8 +88,8 @@ Webbie.getTransactionReceipt = function (transactionHash, callback) {
 };
 
 Webbie.getLogs = function (address, contracts, callback) {
-    const abiDefinition = Webbie.getAbiDefinition(contracts);
-    abiDecoder.addABI(abiDefinition);
+    const abi = Webbie.getAbi(contracts);
+    abiDecoder.addABI(abi);
 
     _web3.eth.filter({
       address: address,
