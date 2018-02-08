@@ -9,7 +9,7 @@ const Webbie = require("./Webbie.js");
 
 Bookie.init = function (callback) {
     Webbie.unlockAccount(bookieAccount, "password");
-    Webbie.deployContract(bookieAccount, ["Team", "Wager", "Bookie"], [], callback);
+    Webbie.deployContract(["Team", "Wager", "Bookie"], bookieAccount, 1000000000000000000000, [], callback);
 };
 
 Bookie.createTeam = function (name) {
@@ -34,14 +34,14 @@ Bookie.getRawLogs = function (callback) {
 
 Bookie.getTeams = function (callback) {
     Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], function (logs) {
-        const teams = logs.filter(log => log && log.name == "LogTeamAdded").map(parseLog);
+        const teams = logs.filter(log => log && log.name == "LogTeamCreated").map(parseLog);
         callback && callback(teams);
     });
 };
 
 Bookie.getWagers = function (callback) {
     Webbie.getLogs(bookieAddress, ['Team', 'Wager', 'Bookie'], function (logs) {
-        const wagers = logs.filter(log => log && log.name == "LogWagerAdded").map(parseLog);
+        const wagers = logs.filter(log => log && log.name == "LogWagerCreated").map(parseLog);
         callback && callback(wagers);
     });
 };

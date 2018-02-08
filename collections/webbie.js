@@ -17,38 +17,36 @@ Webbie.estimateGas = function (from) {
     return estimateGas;
 };
 
-Webbie.getCompiledCode = function (contracts) {
+Webbie.getCompiledContract = function (contracts) {
+    const contractName = contracts[contracts.length - 1];
     const input = {};
     contracts.forEach(contract => {
         input[`${contract}.sol`] = fs.readFileSync(`./contracts/${contract}.sol`).toString();
     });
     const compiledCode = solc.compile({sources: input}, 1);
-    return compiledCode;
+    const compiledContract = compiledCode.contracts[`${contractName}.sol:${contractName}`]
+    return compiledContract;
 };
 
-Webbie.getAbi = function (contracts) {
-    const contractName = contracts[contracts.length - 1];
-    const compiledCode = Webbie.getCompiledCode(contracts);
-    const abi = JSON.parse(compiledCode.contracts[`${contractName}.sol:${contractName}`].interface);
+Webbie.getAbi = function (compiledContract) {
+    const abi = JSON.parse(compiledContract.interface);
     return abi;
 };
 
-Webbie.getByteCode = function (contracts) {
-    const contractName = contracts[contracts.length - 1];
-    const compiledCode = Webbie.getCompiledCode(contracts);
-    const byteCode = '0x' + compiledCode.contracts[`${contractName}.sol:${contractName}`].bytecode;
+Webbie.getByteCode = function (compiledContract) {
+    const byteCode = '0x' + compiledContract.bytecode;
     return byteCode;
 };
 
-Webbie.deployContract = function (from, contracts, params, callback) {
-    const abi = Webbie.getAbi(contracts);
-    const byteCode = Webbie.getByteCode(contracts);
+Webbie.deployContract = function (contracts, from, value, params, callback) {
+    const compiledContract = Webbie.getCompiledContract(contracts);
+    const abi = Webbie.getAbi(compiledContract);
+    const byteCode = Webbie.getByteCode(compiledContract);
 
     const contract = _web3.eth.contract(abi);
     const gasEstimate = _web3.eth.estimateGas({data: byteCode}) * 10;
 
     console.log("=======Webbie.deployContract=======");
-    console.log("");
     console.log("--contracts-------", contracts);
     console.log("--params-------", params);
     console.log("--gasEstimate-------", gasEstimate);
@@ -57,12 +55,12 @@ Webbie.deployContract = function (from, contracts, params, callback) {
     contract.new(...params, {
         data: byteCode,
         from: from,
+        value: value,
         gas: gasEstimate,
     }, function (err, deployedContract) {
         if (err) {
-            return console.log("err", err);
+            console.log("err", err);
         }
-
         if (deployedContract.address) {
             callback && callback(deployedContract);
         }
@@ -70,7 +68,8 @@ Webbie.deployContract = function (from, contracts, params, callback) {
 };
 
 Webbie.getContract = function (address, contracts) {
-    const abi = Webbie.getAbi(contracts);
+    const compiledContract = Webbie.getCompiledContract(contracts);
+    const abi = Webbie.getAbi(compiledContract);
     const contract = _web3.eth.contract(abi).at(address);
     return contract;
 };
@@ -88,7 +87,8 @@ Webbie.getTransactionReceipt = function (transactionHash, callback) {
 };
 
 Webbie.getLogs = function (address, contracts, callback) {
-    const abi = Webbie.getAbi(contracts);
+    const compiledContract = Webbie.getCompiledContract(contracts);
+    const abi = Webbie.getAbi(compiledContract);
     abiDecoder.addABI(abi);
 
     _web3.eth.filter({

@@ -14,9 +14,17 @@ const Webbie = require("../collections/webbie.js");
 
 switch(test) {
     case "abi":
-        const abi = Webbie.getAbi(args);
+        const compiledContractForAbi = Webbie.getCompiledContract(args);
+        const abi = Webbie.getAbi(compiledContractForAbi);
         console.log("--------------------------------------");
         console.log(JSON.stringify(abi));
+        console.log("--------------------------------------");
+        break;
+    case "bytecode":
+        const compiledContractForBytecode = Webbie.getCompiledContract(args);
+        const bytecode = Webbie.getByteCode(compiledContractForBytecode);
+        console.log("--------------------------------------");
+        console.log(JSON.stringify(bytecode));
         console.log("--------------------------------------");
         break;
     case "code":

@@ -9,8 +9,9 @@ contract Bookie {
     mapping (address => Wager) public wagers;
 
     event LogBookieInitialized(address owner, address bookie);
-    event LogTeamAdded(address team, string name);
-    event LogWagerAdded(address wager, address teamHome, address teamAway);
+    event LogTeamCreated(address team, string name);
+    event LogWagerCreated(address wager, address teamHome, address teamAway);
+    event LogBetPlaced(address bettor, address wager, address team, uint amount);
     event LogBookieKilled(address sender, address owner);
 
     modifier isOwner() {
@@ -20,6 +21,7 @@ contract Bookie {
 
     function Bookie()
     public
+    payable
     {
         owner = msg.sender;
         LogBookieInitialized(owner, this);
@@ -31,7 +33,7 @@ contract Bookie {
     {
         Team team = new Team(name);
         teams[team] = team;
-        LogTeamAdded(team, name);
+        LogTeamCreated(team, name);
     }
 
     function createWager(address teamHome, address teamAway)
@@ -40,14 +42,15 @@ contract Bookie {
     {
         Wager wager = new Wager(teamHome, teamAway);
         wagers[wager] = wager;
-        LogWagerAdded(wager, teamHome, teamAway);
+        LogWagerCreated(wager, teamHome, teamAway);
     }
 
     function placeBet(address wager, address team)
     public
     payable
     {
-        wagers[wager].placeBet.value(msg.value)(msg.sender, team);
+        wagers[wager].placeBet(msg.sender, team, msg.value);
+        LogBetPlaced(msg.sender, wager, team, msg.value);
     }
 
     function kill()

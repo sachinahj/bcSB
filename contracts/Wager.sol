@@ -37,18 +37,17 @@ contract Wager {
         teamAway = _teamAway;
     }
 
-    function placeBet(address bettor, address team)
+    function placeBet(address bettor, address team, uint amount)
     public
     isBookie()
     inState(State.Open)
-    payable
     {
         // check if team is valid
         bets.push(
             Bet({
                 bettor: bettor,
                 team: team,
-                amount: msg.value
+                amount: amount
             })
         );
     }

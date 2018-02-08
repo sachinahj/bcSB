@@ -40,6 +40,7 @@ switch(test) {
         break;
     case "createWagers":
         Bookie.getTeams(function (teams) {
+            console.log("Teams:", teams);
             for (let i = 0; i < teams.length; i += 2) {
                 if (teams[i] && teams[i + 1]) {
                     const transactionHash = Bookie.createWager(teams[i].team, teams[i + 1].team);
