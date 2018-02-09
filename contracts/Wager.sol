@@ -64,7 +64,7 @@ contract Wager {
             if (bets[i].team == winningTeam) {
                 bets[i].bettor.transfer(amount);
             } else {
-               bookie.transfer(amount);
+                bookie.transfer(amount);
             }
         }
         delete bets;

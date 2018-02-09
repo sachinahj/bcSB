@@ -67,6 +67,13 @@ contract Bookie {
         wagers[wager].payOut(winningTeam);
     }
 
+    function()
+    public
+    payable
+    {
+    }
+
+
     function kill()
     public
     isOwner()

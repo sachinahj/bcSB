@@ -64,20 +64,23 @@ switch(test) {
         const bets = [{
             bettor: "0x139d356651A57CdBeC7e29aCf36a4A05EbD3A5e1",
             amount: 10,
+            team: "teamHome",
         }, {
             bettor: "0xf1628D156f7B09EED363DC819B4bb59398E05e0C",
             amount: 10,
+            team: "teamHome",
         }, {
             bettor: "0x80D73D99DB2e913829197e87207c89287bB6780A",
             amount: 10,
+            team: "teamHome",
         }];
         Bookie.getWagers(function (wagers) {
             console.log("Wagers:", wagers);
             let wager = wagers[0]
             if (wager) {
                 bets.forEach(bet => {
-                    const transactionHash = Bookie.placeBet(bet.bettor, wager.wager, wager.teamHome, bet.amount);
-                    console.log("transactionHash placeBet", bet.bettor, wager.wager, wager.teamHome, bet.amount, transactionHash);
+                    const transactionHash = Bookie.placeBet(bet.bettor, wager.wager, wager[bet.team], bet.amount);
+                    console.log("transactionHash placeBet", bet.bettor, wager.wager, wager[bet.team], bet.amount, transactionHash);
                 });
             }
         });
