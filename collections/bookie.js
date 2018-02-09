@@ -54,12 +54,20 @@ Bookie.placeBet = function (bettor, wager, team, amount) {
     return transactionHash;
 };
 
+Bookie.payOut = function (wager, winningTeam) {
+    Webbie.unlockAccount(bookieAccount, "password");
+    const bookieContract = Webbie.getContract(bookieAddress, ['Team', 'Wager', 'Bookie']);
+    const estimateGas = Webbie.estimateGas(bookieAccount);
+    const transactionHash = bookieContract.payOut(wager, winningTeam, {from: bookieAccount, gas: estimateGas});
+    return transactionHash;
+}
+
 function parseLog(raw) {
     const log = {};
     raw.events.forEach(event => {
         log[event.name] = event.value.toString()
     });
     return log;
-}
+};
 
 module.exports = Bookie;

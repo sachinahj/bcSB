@@ -82,6 +82,14 @@ switch(test) {
             }
         });
         break;
+    case "payOut":
+        const wager = "0x2c21cdd00205f51443f7e089835bb6ba17ff9481";
+        const teamHome = "0x8bf7f2b8b49f9e6c24abfed885bf97bb0e8c7778";
+        const teamAway = "0xd0de3ef87a9bf0b69f4d7c5bb6104088a35f549a";
+        const team = teamHome;
+        const transactionHash = Bookie.payOut(wager, team);
+        console.log("transactionHash payOut", wager, team, transactionHash);
+        break;
     case "getTeams":
         Bookie.getTeams(function (teams) {
             console.log("Teams:", teams);
