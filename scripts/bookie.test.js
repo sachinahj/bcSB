@@ -26,11 +26,11 @@ switch(test) {
         break;
     case "createTeams":
         const teams = [
-            "Jaguars",
+            // "Jaguars",
             "Ducks",
-            "Astros",
-            "Stars",
-            "Kings",
+            // "Astros",
+            // "Stars",
+            // "Kings",
             "Tigers",
         ];
         teams.forEach(team => {

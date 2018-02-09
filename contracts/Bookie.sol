@@ -40,6 +40,8 @@ contract Bookie {
     public
     isOwner()
     {
+        // require teamHome is valid
+        // require teamAway is valid
         Wager wager = new Wager(teamHome, teamAway);
         wagers[wager] = wager;
         LogWagerCreated(wager, teamHome, teamAway);
@@ -49,6 +51,8 @@ contract Bookie {
     public
     payable
     {
+        // require wager is valid
+        // require team is valid
         uint total = msg.value * 2;
         wagers[wager].placeBet.value(total)(msg.sender, team, msg.value);
         LogBetPlaced(msg.sender, wager, team, msg.value);
@@ -58,6 +62,8 @@ contract Bookie {
     public
     isOwner()
     {
+        // require wager is valid
+        // require winningTeam is valid
         wagers[wager].payOut(winningTeam);
     }
 
@@ -65,8 +71,8 @@ contract Bookie {
     public
     isOwner()
     {
-        // kill wagers
-        // kill teams
+        // kill leftover wagers
+        // kill leftover teams
         LogBookieKilled(msg.sender, owner);
         selfdestruct(owner);
     }

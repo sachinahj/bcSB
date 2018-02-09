@@ -43,7 +43,7 @@ contract Wager {
     inState(State.Open)
     payable
     {
-        // check if team is valid
+        // require team is valid?
         bets.push(
             Bet({
                 bettor: bettor,
@@ -58,6 +58,7 @@ contract Wager {
     isBookie()
     inState(State.Open)
     {
+        // require winningTeam is valid?
         for (uint i = 0; i < bets.length; i++) {
           if (bets[i].team == winningTeam) {
             bets[i].bettor.transfer(bets[i].amount * 2);
