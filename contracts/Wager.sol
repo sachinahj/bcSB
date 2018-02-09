@@ -59,13 +59,24 @@ contract Wager {
     inState(State.Open)
     {
         // require winningTeam is valid?
+        uint toBookie = 0;
         for (uint i = 0; i < bets.length; i++) {
-          if (bets[i].team == winningTeam) {
-            bets[i].bettor.transfer(bets[i].amount * 2);
-          }
+            uint amount = bets[i].amount * 2;
+            if (bets[i].team == winningTeam) {
+                bets[i].bettor.transfer(amount);
+            } else {
+                toBookie += amount;
+            }
         }
-
-        // bookie.transfer(this.value);
+        // bookie.transfer(toBookie);
         // state = State.PaidOut;
+    }
+
+    function kill()
+    public
+    inState(State.PaidOut)
+    isBookie()
+    {
+        selfdestruct(bookie);
     }
 }
