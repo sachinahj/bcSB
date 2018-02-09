@@ -49,8 +49,16 @@ contract Bookie {
     public
     payable
     {
-        wagers[wager].placeBet(msg.sender, team, msg.value);
+        uint total = msg.value * 2;
+        wagers[wager].placeBet.value(total)(msg.sender, team, msg.value);
         LogBetPlaced(msg.sender, wager, team, msg.value);
+    }
+
+    function payOut(address wager, address winningTeam)
+    public
+    isOwner()
+    {
+        wagers[wager].payOut(winningTeam);
     }
 
     function kill()

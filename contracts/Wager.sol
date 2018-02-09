@@ -41,6 +41,7 @@ contract Wager {
     public
     isBookie()
     inState(State.Open)
+    payable
     {
         // check if team is valid
         bets.push(
@@ -50,5 +51,20 @@ contract Wager {
                 amount: amount
             })
         );
+    }
+
+    function payOut(address winningTeam)
+    public
+    isBookie()
+    inState(State.Open)
+    {
+        for (uint i = 0; i < bets.length; i++) {
+          if (bets[i].team == winningTeam) {
+            bets[i].bettor.transfer(bets[i].amount * 2);
+          } else {
+            bookie.transfer(bets[i].amount * 2);
+          }
+        }
+        // state = State.PaidOut;
     }
 }
