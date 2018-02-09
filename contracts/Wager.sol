@@ -62,10 +62,10 @@ contract Wager {
         for (uint i = 0; i < bets.length; i++) {
           if (bets[i].team == winningTeam) {
             bets[i].bettor.transfer(bets[i].amount * 2);
-          } else {
-            bookie.transfer(bets[i].amount * 2);
           }
         }
+
+        // bookie.transfer(this.value);
         // state = State.PaidOut;
     }
 }
